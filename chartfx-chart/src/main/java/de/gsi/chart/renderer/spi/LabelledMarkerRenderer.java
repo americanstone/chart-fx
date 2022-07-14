@@ -41,7 +41,7 @@ import de.gsi.dataset.utils.ProcessingProfiler;
 public class LabelledMarkerRenderer extends AbstractDataSetManagement<LabelledMarkerRenderer> implements Renderer {
     private static final Logger LOGGER = LoggerFactory.getLogger(LabelledMarkerRenderer.class);
     private static final String STYLE_CLASS_LABELLED_MARKER = "chart-labelled-marker";
-    private static final String DEFAULT_FONT = "Helvetia";
+    private static final String DEFAULT_FONT = "Helvetica";
     private static final int DEFAULT_FONT_SIZE = 18;
     private static final Color DEFAULT_GRID_LINE_COLOR = Color.GREEN;
     private static final double DEFAULT_GRID_LINE_WIDTH = 1;
@@ -253,6 +253,9 @@ public class LabelledMarkerRenderer extends AbstractDataSetManagement<LabelledMa
         List<DataSet> drawnDataSet = new ArrayList<>(localDataSetList.size());
         for (int dataSetIndex = localDataSetList.size() - 1; dataSetIndex >= 0; dataSetIndex--) {
             final DataSet dataSet = localDataSetList.get(dataSetIndex);
+            if (!dataSet.isVisible()) {
+                continue;
+            }
             dataSet.lock().readLockGuard(() -> {
                 // check for potentially reduced data range we are supposed to plot
                 final int indexMin = Math.max(0, dataSet.getIndex(DataSet.DIM_X, xMin));

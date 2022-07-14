@@ -56,9 +56,9 @@ import de.gsi.dataset.EditConstraints;
 import de.gsi.dataset.EditableDataSet;
 
 /**
- * 
+ *
  * Simple plugin to interact with DataSets implementing {@link de.gsi.dataset.EditableDataSet}.
- * 
+ *
  * @author rstein
  */
 public class EditDataSet extends TableViewer {
@@ -343,7 +343,7 @@ public class EditDataSet extends TableViewer {
 
     /**
      * Handles series that have data sorted or not sorted with respect to X coordinate.
-     * 
+     *
      * @param dataSet data set
      * @param searchedX X coordinates
      * @return pair of neighbouring data points
@@ -544,7 +544,7 @@ public class EditDataSet extends TableViewer {
 
     /**
      * Returns the value of the {@link #editEnableProperty()}
-     * 
+     *
      * @return true: can edit point
      */
     public final boolean isEditable() {
@@ -683,7 +683,7 @@ public class EditDataSet extends TableViewer {
 
     /**
      * Creates an event handler that handles a mouse press on the node.
-     * 
+     *
      * @param dataPoint corresponding to clicked data point
      * @return the event handler.
      */
@@ -932,7 +932,7 @@ public class EditDataSet extends TableViewer {
             super();
             getStyleClass().add(STYLE_CLASS_SELECT_PATH);
             // this.setPickOnBounds(true);
-            // setManaged(false);
+            setManaged(false);
 
             final EditConstraints constraints = dataSet.getEditConstraints();
             if (constraints == null) {
@@ -975,6 +975,10 @@ public class EditDataSet extends TableViewer {
         }
 
         public void applyDrag(final double deltaX, final double deltaY) {
+            if (!dataSet.isVisible()) {
+                return;
+            }
+
             double nX = getX();
             double nY = getY();
             int index = getIndex();
@@ -1016,6 +1020,10 @@ public class EditDataSet extends TableViewer {
         }
 
         public boolean delete() {
+            if (!dataSet.isVisible()) {
+                return false;
+            }
+
             final EditConstraints constraints = dataSet.getEditConstraints();
             int index = getIndex();
             if (constraints == null || constraints.canDelete(index)) {
